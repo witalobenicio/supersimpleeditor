@@ -1,4 +1,9 @@
 const path = require('path');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
+var isInNodeModules = 'node_modules' ===
+  path.basename(path.resolve(path.join(__dirname, '..', '..')));
+var relativePath = isInNodeModules ? '../../..' : '';
+var indexHtmlPath = path.resolve(__dirname, relativePath, 'index.html');
 
 module.exports = {
   entry: './src/index.js',
@@ -16,5 +21,23 @@ module.exports = {
            ]
        }
      ]
-   }
+   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      inject: true,
+      template: indexHtmlPath,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true
+      }
+    }),
+  ]
 };
